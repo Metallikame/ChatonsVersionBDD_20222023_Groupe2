@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Categorie;
 use App\Entity\Chaton;
+use App\Entity\Proprietaire;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,7 +19,12 @@ class ChatonType extends AbstractType
             ->add('Nom')
             ->add('Sterilise')
             ->add('Photo')
-            ->add('Proprietaire')
+            ->add('Proprietaire', EntityType::class, [
+                'class'=>Proprietaire::class,
+                'choice_label'=>"nom",
+                'multiple'=>true,
+                'expanded'=>true
+            ])
             ->add('Categorie', EntityType::class, [
                 'class'=>Categorie::class,
                 'choice_label'=>"titre",

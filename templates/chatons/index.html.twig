@@ -9,14 +9,19 @@
 </style>
 
 <div class="container">
-    <h1>Chatons de la catégorie {{ categorie.titre }}</h1>
+    <h1>Chatons de la catégorie {{ categorie.titre }} </h1>
     <div class="row">
         {% for c in chatons %}
             <div class="col col-3">
                 <div class="card"><img src="{{ c.photo }}" alt=""
                                        class="card-img-top">
                     <div class="card-body">
-                        <h2 class="card-title">{{ c.nom }}</h2>
+                        <h2 class="card-title">{{ c.nom }} <br>
+                            {% for p in c.proprietaire %}
+                                {{ p.nom }}
+                                {{ p.prenom }}
+                            {% endfor %}
+                        </h2>
                     </div>
                 </div>
             </div>

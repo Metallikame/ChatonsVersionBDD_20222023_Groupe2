@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ChatonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,13 +41,13 @@ class Chaton
     private $Categorie;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\ManyToMany(targetEntity=Proprietaire::class, inversedBy="proprietaire")
      */
     private $proprietaire;
 
-    public function getId(): ?int
+    public function __construct()
     {
-        return $this->id;
+        $this->proprietaire = new ArrayCollection();
     }
 
     public function getNom(): ?string
@@ -96,14 +98,26 @@ class Chaton
         return $this;
     }
 
-    public function getProprietaire(): ?string
+    /**
+     * @return Collection<int, Proprietaire>
+     */
+    public function getProprietaire(): Collection
     {
         return $this->proprietaire;
     }
 
-    public function setProprietaire(string $proprietaire): self
+    public function addProprietaire(Proprietaire $proprietaire): self
     {
-        $this->proprietaire = $proprietaire;
+        if (!$this->proprietaire->contains($proprietaire)) {
+            $this->proprietaire[] = $proprietaire;
+        }
+
+        return $this;
+    }
+
+    public function removeProprietaire(Proprietaire $proprietaire): self
+    {
+        $this->proprietaire->removeElement($proprietaire);
 
         return $this;
     }
