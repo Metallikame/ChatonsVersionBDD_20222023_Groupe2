@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Categorie;
 use App\Entity\Proprietaire;
-use App\Form\CategorieSupprimerType;
-use App\Form\CategorieType;
+use App\Form\ProprietaireType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,10 +21,10 @@ class ProprietaireController extends AbstractController
         //On va aller chercher les catégories dans la BDD
         //pour ça on a besoin d'un repository
         $repo = $doctrine->getRepository(Proprietaire::class);
-        $proprietaire=$repo->findAll(); //select * transformé en liste de Categorie
+        $proprietaire=$repo->findAll(); //select * transformé en liste de Propriétaires
 
         return $this->render('proprietaire/index.html.twig', [
-            'categories'=>$proprietaire
+            'proprietaire'=>$proprietaire
         ]);
     }
 
@@ -58,45 +56,6 @@ class ProprietaireController extends AbstractController
         }
 
         return $this->render("proprietaire/ajouter.html.twig",[
-            "formulaire"=>$form->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/categorie/supprimer/{id}", name="app_categories_supprimer")
-     */
-    public function supprimer($id, ManagerRegistry $doctrine, Request $request): Response{
-        //créer le formulaire sur le même principe que dans ajouter
-        //mais avec une catégorie existante
-        $proprietaire = $doctrine->getRepository(Proprietaire::class)->find($id);
-
-        //je vais gérer le fait que l'id n'existe pas
-        if (!$proprietaire){
-            throw $this->createNotFoundException("Pas de propriétaire avec l'id $id");
-        }
-
-        //Si j'arrive là c'est qu'elle existe en BDD
-        //à partir de ça je crée le formulaire
-        $form=$this->createForm(ProprietaireSupprimerType::class, $proprietaire);
-
-        //On gère le retour du formulaire tout de suite
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
-            //l'objet catégorie est rempli
-            //on va utiliser l'entity manager de doctrine
-            $em=$doctrine->getManager();
-            //on lui dit qu'on supprimer la catégorie
-            $em->remove($proprietaire);
-
-            //on génère l'appel SQL (update ici)
-            $em->flush();
-
-            //on revient à l'accueil
-            return $this->redirectToRoute("app_categories");
-        }
-
-        return $this->render("proprietaire/supprimer.html.twig",[
-            "proprietaire"=>$proprietaire,
             "formulaire"=>$form->createView()
         ]);
     }
