@@ -38,6 +38,11 @@ class Chaton
      */
     private $Categorie;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $proprietaire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class Chaton
     public function setCategorie(?Categorie $Categorie): self
     {
         $this->Categorie = $Categorie;
+
+        return $this;
+    }
+
+    public function getProprietaire(): ?string
+    {
+        return $this->proprietaire;
+    }
+
+    public function setProprietaire(string $proprietaire): self
+    {
+        $this->proprietaire = $proprietaire;
 
         return $this;
     }
