@@ -16,12 +16,13 @@
                 <div class="card"><img src="{{ c.photo }}" alt=""
                                        class="card-img-top">
                     <div class="card-body">
-                        <h2 class="card-title">{{ c.nom }} <br>
+                        <h2 class="card-title">{{ c.nom }} </h2>
+                        <h5>Propriétaires :</h5>
                             {% for p in c.proprietaire %}
                                 {{ p.nom }}
                                 {{ p.prenom }}
+                                <br>
                             {% endfor %}
-                        </h2>
                     </div>
                 </div>
             </div>
